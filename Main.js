@@ -10,6 +10,7 @@ let arrayRute = new Array();
 let feature = null;
 let arrayFeatures = new Array();
 let idFeature = 0;
+let lastPosition = null;
 
 let layerTrack = new ol.layer.Vector({
   map: map,
@@ -64,7 +65,7 @@ function actDeacLocation() {
     activateDeactivateLocation = false;
     isCenter = false;
 
-    if(activateDeactivateTrack){
+    if (activateDeactivateTrack) {
       actDeacTrack();
     }
 
@@ -123,16 +124,16 @@ function locateMe(map) {
   //eventos "on"
   // update the HTML page when the position changes.
   geolocation.on("change", function () {
-    el("accuracy").innerText = parseFloat(geolocation.getAccuracy()).toFixed(2)  + " [m]";
-    el("altitude").innerText = parseFloat(geolocation.getAltitude()).toFixed(2)  + " [m]";
+    el("accuracy").innerText = parseFloat(geolocation.getAccuracy()).toFixed(2) + " [m]";
+    el("altitude").innerText = parseFloat(geolocation.getAltitude()).toFixed(2) + " [m]";
     el("altitudeAccuracy").innerText =
-    parseFloat(geolocation.getAltitudeAccuracy()).toFixed(2)  + " [m]";
-    el("heading").innerText = parseFloat(geolocation.getHeading()).toFixed(2)  + " [rad]";
-    el("speed").innerText = parseFloat(geolocation.getSpeed()).toFixed(2)  + " [m/s]";
+      parseFloat(geolocation.getAltitudeAccuracy()).toFixed(2) + " [m]";
+    el("heading").innerText = parseFloat(geolocation.getHeading()).toFixed(2) + " [rad]";
+    el("speed").innerText = parseFloat(geolocation.getSpeed()).toFixed(2) + " [m/s]";
   });
 
   // handle geolocation error.
-   geolocation.on("error", function (error) {
+  geolocation.on("error", function (error) {
     var info = document.getElementById("info");
     info.innerHTML = error.message;
     info.style.display = "";
@@ -165,12 +166,30 @@ function locateMe(map) {
     }
 
     if (activateDeactivateTrack) {
-      let pointList = [coordinates[0], coordinates[1]];
-      
-      arrayRute.push(pointList);
+      let sameLocation = true;
+      if (lastPosition != null) {
+        for (let index = 0; index < lastPosition.length; index++) {
+          if (geolocation.getPosition()[index] != lastPosition[index]) {
+            sameLocation = false;
+          }
+        }
+      }
 
-      geom = new ol.geom.LineString(arrayRute);
-      feature.setGeometry(geom);
+      if (!sameLocation || lastPosition==null) {
+
+        console.log("Cambio   " + lastPosition + "      " + geolocation.getPosition());
+
+        let pointList = [coordinates[0], coordinates[1]];
+
+        arrayRute.push(pointList);
+
+        geom = new ol.geom.LineString(arrayRute);
+        feature.setGeometry(geom);
+
+        lastPosition = geolocation.getPosition();
+      }else{
+        console.log("Cambio, es la misma posicion   " + lastPosition + "      " + geolocation.getPosition());
+      }
     }
   });
 
@@ -192,7 +211,7 @@ function centerView(view) {
     let position = geolocation.getPosition();
     isCenter = true;
 
-    if(zoom < 18){
+    if (zoom < 18) {
       zoom = 18;
     }
 
@@ -218,7 +237,7 @@ function checkCenter(view) {
         }
       }
 
-      if (samePoint && zoom >=18) {
+      if (samePoint && zoom >= 18) {
         //está centrado
         el("center").setAttribute("disabled", "true");
         isCenter = true;
