@@ -176,9 +176,7 @@ function locateMe(map) {
       }
 
       if (!sameLocation || lastPosition==null) {
-
-        console.log("Cambio   " + lastPosition + "      " + geolocation.getPosition());
-
+        
         let pointList = [coordinates[0], coordinates[1]];
 
         arrayRute.push(pointList);
@@ -187,8 +185,6 @@ function locateMe(map) {
         feature.setGeometry(geom);
 
         lastPosition = geolocation.getPosition();
-      }else{
-        console.log("Cambio, es la misma posicion   " + lastPosition + "      " + geolocation.getPosition());
       }
     }
   });
