@@ -123,12 +123,12 @@ function locateMe(map) {
   //eventos "on"
   // update the HTML page when the position changes.
   geolocation.on("change", function () {
-    el("accuracy").innerText = geolocation.getAccuracy() + " [m]";
-    el("altitude").innerText = geolocation.getAltitude() + " [m]";
+    el("accuracy").innerText = parseFloat(geolocation.getAccuracy()).toFixed(2)  + " [m]";
+    el("altitude").innerText = parseFloat(geolocation.getAltitude()).toFixed(2)  + " [m]";
     el("altitudeAccuracy").innerText =
-      geolocation.getAltitudeAccuracy() + " [m]";
-    el("heading").innerText = geolocation.getHeading() + " [rad]";
-    el("speed").innerText = geolocation.getSpeed() + " [m/s]";
+    parseFloat(geolocation.getAltitudeAccuracy()).toFixed(2)  + " [m]";
+    el("heading").innerText = parseFloat(geolocation.getHeading()).toFixed(2)  + " [rad]";
+    el("speed").innerText = parseFloat(geolocation.getSpeed()).toFixed(2)  + " [m/s]";
   });
 
   // handle geolocation error.
