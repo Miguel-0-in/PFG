@@ -24,7 +24,7 @@ function init() {
   let view = new ol.View({
     center: [-665167.6272659146, 4493012.258874561],
     zoom: 8,
-    maxZoom: 15,
+    maxZoom: 20,
     minZoom: 8,
   });
 
@@ -122,21 +122,21 @@ function locateMe(map) {
 
   //eventos "on"
   // update the HTML page when the position changes.
-  /*geolocation.on("change", function () {
+  geolocation.on("change", function () {
     el("accuracy").innerText = geolocation.getAccuracy() + " [m]";
     el("altitude").innerText = geolocation.getAltitude() + " [m]";
     el("altitudeAccuracy").innerText =
       geolocation.getAltitudeAccuracy() + " [m]";
     el("heading").innerText = geolocation.getHeading() + " [rad]";
     el("speed").innerText = geolocation.getSpeed() + " [m/s]";
-  });*/
+  });
 
   // handle geolocation error.
-  /* geolocation.on("error", function (error) {
+   geolocation.on("error", function (error) {
     var info = document.getElementById("info");
     info.innerHTML = error.message;
     info.style.display = "";
-  });*/
+  });
 
   positionFeature = new ol.Feature();
   positionFeature.setStyle(
@@ -188,9 +188,15 @@ function locateMe(map) {
 
 function centerView(view) {
   if (geolocation.getPosition() != null) {
+    let zoom = view.getZoom();
+    let position = geolocation.getPosition();
     isCenter = true;
-    view.setCenter(geolocation.getPosition());
-    view.setZoom(15);
+
+    if(zoom < 18){
+      zoom = 18;
+    }
+
+    flyTo(position, zoom, view);
     el("center").setAttribute("disabled", "true");
   }
 }
@@ -212,7 +218,7 @@ function checkCenter(view) {
         }
       }
 
-      if (samePoint && zoom == 15) {
+      if (samePoint && zoom >=18) {
         //está centrado
         el("center").setAttribute("disabled", "true");
         isCenter = true;
@@ -246,4 +252,13 @@ function removePositions(map) {
 
 function el(id) {
   return document.getElementById(id);
+}
+
+function flyTo(coords, zoom, view) {
+  var duration = 2000;
+  view.animate({
+    center: coords,
+    duration: duration / 2,
+    zoom: zoom
+  });
 }
