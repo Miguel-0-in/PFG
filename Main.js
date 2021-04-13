@@ -122,7 +122,6 @@ function locateMe(map) {
   geolocation.setTracking(true);
 
   //eventos "on"
-  // update the HTML page when the position changes.
   geolocation.on("change", function () {
     el("accuracy").innerText = parseFloat(geolocation.getAccuracy()).toFixed(2) + " [m]";
     el("altitude").innerText = parseFloat(geolocation.getAltitude()).toFixed(2) + " [m]";
@@ -132,7 +131,6 @@ function locateMe(map) {
     el("speed").innerText = parseFloat(geolocation.getSpeed()).toFixed(2) + " [m/s]";
   });
 
-  // handle geolocation error.
   geolocation.on("error", function (error) {
     var info = document.getElementById("info");
     info.innerHTML = error.message;
