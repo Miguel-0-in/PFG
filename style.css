@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'icomoon';
+    src:  url('fonts/icomoon.eot?js4y63');
+    src:  url('fonts/icomoon.eot?js4y63#iefix') format('embedded-opentype'),
+      url('fonts/icomoon.ttf?js4y63') format('truetype'),
+      url('fonts/icomoon.woff?js4y63') format('woff'),
+      url('fonts/icomoon.svg?js4y63#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+  }
+  
+  [class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-location2:before {
+    content: "\e948";
+  }
+  .icon-compass:before {
+    content: "\e949";
+  }
+  .icon-target:before {
+    content: "\e9b3";
+  }
+  
+#locate, #track, #center{
+    margin-top: 10px;
+    border-radius: 50px;
+    border: none; /* Remove borders */
+    color: white; /* White text */
+    padding: 12px 16px; /* Some padding */
+    font-size: 16px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+#locate, #track{
+    background-color: #7A7A73;
+}
+
+#center{
+    background-color: #d5ddde;
+}

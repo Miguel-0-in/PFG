@@ -10,7 +10,6 @@ let arrayRute = new Array();
 let feature = null;
 let arrayFeatures = new Array();
 let idFeature = 0;
-let lastPosition = null;
 
 let layerTrack = new ol.layer.Vector({
   map: map,
@@ -25,7 +24,7 @@ function init() {
   let view = new ol.View({
     center: [-665167.6272659146, 4493012.258874561],
     zoom: 8,
-    maxZoom: 20,
+    maxZoom: 15,
     minZoom: 8,
   });
 
@@ -65,7 +64,7 @@ function actDeacLocation() {
     activateDeactivateLocation = false;
     isCenter = false;
 
-    if (activateDeactivateTrack) {
+    if(activateDeactivateTrack){
       actDeacTrack();
     }
 
@@ -122,20 +121,22 @@ function locateMe(map) {
   geolocation.setTracking(true);
 
   //eventos "on"
-  geolocation.on("change", function () {
-    el("accuracy").innerText = parseFloat(geolocation.getAccuracy()).toFixed(2) + " [m]";
-    el("altitude").innerText = parseFloat(geolocation.getAltitude()).toFixed(2) + " [m]";
+  // update the HTML page when the position changes.
+  /*geolocation.on("change", function () {
+    el("accuracy").innerText = geolocation.getAccuracy() + " [m]";
+    el("altitude").innerText = geolocation.getAltitude() + " [m]";
     el("altitudeAccuracy").innerText =
-      parseFloat(geolocation.getAltitudeAccuracy()).toFixed(2) + " [m]";
-    el("heading").innerText = parseFloat(geolocation.getHeading()).toFixed(2) + " [rad]";
-    el("speed").innerText = parseFloat(geolocation.getSpeed()).toFixed(2) + " [m/s]";
-  });
+      geolocation.getAltitudeAccuracy() + " [m]";
+    el("heading").innerText = geolocation.getHeading() + " [rad]";
+    el("speed").innerText = geolocation.getSpeed() + " [m/s]";
+  });*/
 
-  geolocation.on("error", function (error) {
+  // handle geolocation error.
+  /* geolocation.on("error", function (error) {
     var info = document.getElementById("info");
     info.innerHTML = error.message;
     info.style.display = "";
-  });
+  });*/
 
   positionFeature = new ol.Feature();
   positionFeature.setStyle(
@@ -164,26 +165,12 @@ function locateMe(map) {
     }
 
     if (activateDeactivateTrack) {
-      let sameLocation = true;
-      if (lastPosition != null) {
-        for (let index = 0; index < lastPosition.length; index++) {
-          if (geolocation.getPosition()[index] != lastPosition[index]) {
-            sameLocation = false;
-          }
-        }
-      }
+      let pointList = [coordinates[0], coordinates[1]];
+      
+      arrayRute.push(pointList);
 
-      if (!sameLocation || lastPosition==null) {
-        
-        let pointList = [coordinates[0], coordinates[1]];
-
-        arrayRute.push(pointList);
-
-        geom = new ol.geom.LineString(arrayRute);
-        feature.setGeometry(geom);
-
-        lastPosition = geolocation.getPosition();
-      }
+      geom = new ol.geom.LineString(arrayRute);
+      feature.setGeometry(geom);
     }
   });
 
@@ -201,15 +188,9 @@ function locateMe(map) {
 
 function centerView(view) {
   if (geolocation.getPosition() != null) {
-    let zoom = view.getZoom();
-    let position = geolocation.getPosition();
     isCenter = true;
-
-    if (zoom < 18) {
-      zoom = 18;
-    }
-
-    flyTo(position, zoom, view);
+    view.setCenter(geolocation.getPosition());
+    view.setZoom(15);
     el("center").setAttribute("disabled", "true");
   }
 }
@@ -231,24 +212,28 @@ function checkCenter(view) {
         }
       }
 
-      if (samePoint && zoom >= 18) {
+      if (samePoint && zoom == 15) {
         //está centrado
         el("center").setAttribute("disabled", "true");
+        el("center").style.backgroundColor = '#71a7d3';
         isCenter = true;
       } else {
         //no está centrado
         el("center").removeAttribute("disabled");
+        el("center").style.backgroundColor = '#7A7A73';
         isCenter = false;
       }
     }
   } else {
     //track no está activado
     el("center").setAttribute("disabled", "true");
+    el("center").style.backgroundColor = '#71a7d3';
     isCenter = true;
   }
 }
 
 function deactivate(map) {
+  el("center").style.backgroundColor = '#d5ddde';
   el("center").setAttribute("disabled", "true");
   removePositions(map);
   geolocation = null;
@@ -265,13 +250,4 @@ function removePositions(map) {
 
 function el(id) {
   return document.getElementById(id);
-}
-
-function flyTo(coords, zoom, view) {
-  var duration = 2000;
-  view.animate({
-    center: coords,
-    duration: duration / 2,
-    zoom: zoom
-  });
 }
