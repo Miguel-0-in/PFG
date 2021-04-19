@@ -10,6 +10,7 @@ let arrayRute = new Array();
 let feature = null;
 let arrayFeatures = new Array();
 let idFeature = 0;
+//let listLocation = new Array();
 
 let layerTrack = new ol.layer.Vector({
   map: map,
@@ -24,7 +25,7 @@ function init() {
   let view = new ol.View({
     center: [-665167.6272659146, 4493012.258874561],
     zoom: 8,
-    maxZoom: 15,
+    maxZoom: 20,
     minZoom: 8,
   });
 
@@ -64,7 +65,7 @@ function actDeacLocation() {
     activateDeactivateLocation = false;
     isCenter = false;
 
-    if(activateDeactivateTrack){
+    if (activateDeactivateTrack) {
       actDeacTrack();
     }
 
@@ -107,6 +108,9 @@ function trackMe() {
 }
 
 function locateMe(map) {
+  let lastPosition = null;
+  //listLocation.push('locating');
+  let located = false;
   let view = map.getView();
 
   if (geolocation == null) {
@@ -119,6 +123,8 @@ function locateMe(map) {
   }
 
   geolocation.setTracking(true);
+
+
 
   //eventos "on"
   // update the HTML page when the position changes.
@@ -154,23 +160,58 @@ function locateMe(map) {
     })
   );
 
+
+
   geolocation.on("change:position", function () {
     let coordinates = geolocation.getPosition();
     positionFeature.setGeometry(
       coordinates ? new ol.geom.Point(coordinates) : null
     );
 
-    if (isCenter) {
-      centerView(map.getView());
+
+    /*if (listLocation.indexOf('locating') == 0) {
+      flyTo(coordinates, 18);//solo una vez
+    }*/
+    if (!located) {
+      flyTo(coordinates, 18);//solo una vez
     }
 
-    if (activateDeactivateTrack) {
-      let pointList = [coordinates[0], coordinates[1]];
-      
-      arrayRute.push(pointList);
+    if (isCenter && located) {
+      let zoom = view.getZoom();
 
-      geom = new ol.geom.LineString(arrayRute);
-      feature.setGeometry(geom);
+      if (zoom < 18) {
+        zoom = 18;
+      }
+
+      view.setCenter(geolocation.getPosition());
+      view.setZoom(zoom);
+    }
+
+    /*listLocation.splice(listLocation.indexOf('locating'), 1);
+    listLocation.push('located');*/
+
+    located=true;
+
+    if (activateDeactivateTrack) {
+      let sameLocation = true;
+      if (lastPosition != null) {
+        for (let index = 0; index < lastPosition.length; index++) {
+          if (geolocation.getPosition()[index] != lastPosition[index]) {
+            sameLocation = false;
+          }
+        }
+      }
+
+      if (!sameLocation || lastPosition == null) {
+        let pointList = [coordinates[0], coordinates[1]];
+
+        arrayRute.push(pointList);
+
+        geom = new ol.geom.LineString(arrayRute);
+        feature.setGeometry(geom);
+
+        lastPosition = geolocation.getPosition();
+      }
     }
   });
 
@@ -188,47 +229,54 @@ function locateMe(map) {
 
 function centerView(view) {
   if (geolocation.getPosition() != null) {
+    let zoom = view.getZoom();
+
+    if (zoom < 18) {
+      zoom = 18;
+    }
+
     isCenter = true;
-    view.setCenter(geolocation.getPosition());
-    view.setZoom(15);
+    flyTo(geolocation.getPosition(), zoom);
     el("center").setAttribute("disabled", "true");
   }
 }
 
 function checkCenter(view) {
-  let center = view.getCenter();
-  let zoom = view.getZoom();
+  if (geolocation != null) {
+    let center = view.getCenter();
+    let zoom = view.getZoom();
 
-  if (activateDeactivateLocation) {
-    let position = geolocation.getPosition();
+    if (activateDeactivateLocation) {
+      let position = geolocation.getPosition();
 
-    //track está activado
-    if (position != null) {
-      let samePoint = true;
+      //track está activado
+      if (position != null) {
+        let samePoint = true;
 
-      for (let index = 0; index < position.length; index++) {
-        if (center[index] != position[index]) {
-          samePoint = false;
+        for (let index = 0; index < position.length; index++) {
+          if (center[index] != position[index]) {
+            samePoint = false;
+          }
+        }
+
+        if (samePoint && zoom >= 18) {
+          //está centrado
+          el("center").setAttribute("disabled", "true");
+          el("center").style.backgroundColor = '#71a7d3';
+          isCenter = true;
+        } else {
+          //no está centrado
+          el("center").removeAttribute("disabled");
+          el("center").style.backgroundColor = '#7A7A73';
+          isCenter = false;
         }
       }
-
-      if (samePoint && zoom == 15) {
-        //está centrado
-        el("center").setAttribute("disabled", "true");
-        el("center").style.backgroundColor = '#71a7d3';
-        isCenter = true;
-      } else {
-        //no está centrado
-        el("center").removeAttribute("disabled");
-        el("center").style.backgroundColor = '#7A7A73';
-        isCenter = false;
-      }
+    } else {
+      //track no está activado
+      el("center").setAttribute("disabled", "true");
+      el("center").style.backgroundColor = '#71a7d3';
+      isCenter = true;
     }
-  } else {
-    //track no está activado
-    el("center").setAttribute("disabled", "true");
-    el("center").style.backgroundColor = '#71a7d3';
-    isCenter = true;
   }
 }
 
@@ -236,6 +284,7 @@ function deactivate(map) {
   el("center").style.backgroundColor = '#d5ddde';
   el("center").setAttribute("disabled", "true");
   removePositions(map);
+  //listLocation = [];
   geolocation = null;
 }
 
@@ -250,4 +299,14 @@ function removePositions(map) {
 
 function el(id) {
   return document.getElementById(id);
+}
+
+function flyTo(coords, zoom) {
+  var view = map.getView();
+  var duration = 2000;
+  view.animate({
+    center: coords,
+    duration: duration / 2,
+    zoom: zoom
+  });
 }
