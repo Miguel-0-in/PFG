@@ -9,6 +9,9 @@
   <script src="./libs/v6.5.0-dist/ol.js"></script>
   <link rel="stylesheet" href="./libs/v6.5.0-dist/ol.css" />
 
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
   <title>Proyecto Fin de Curso</title>
   <style>
     .map {
@@ -22,9 +25,9 @@
   <div id="map" class="map"></div>
   <div id="info" style="display: none;"></div>
   <label for="track">track position</label>
-  <button id="locate">Localizame</button>
-  <button id="center" disabled="true">Centrar</button>
-  <button id="track">Grabar Ruta</button>
+  <button id="locate" class="icon-location2"></button>
+  <button id="track" class="icon-compass"></button>
+  <button id="center" class="icon-target" disabled="true"></button>
   <p>
     position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
     altitude : <code id="altitude"></code>&nbsp;&nbsp;
@@ -33,6 +36,9 @@
     speed : <code id="speed"></code>
   </p>
   <script src="Main.js"></script>
+  <!--<script src="bootstrap-5.0.0-beta3-dist/js/jquery-3.5.1.slim.min.js"></script>
+  <script src="bootstrap-5.0.0-beta3-dist/js/popper.min.js"></script>-->
+  <script src="bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js"></script>
 </body>
 
 </html>
