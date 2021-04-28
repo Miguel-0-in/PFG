@@ -10,7 +10,6 @@ let arrayRute = new Array();
 let feature = null;
 let arrayFeatures = new Array();
 let idFeature = 0;
-//let listLocation = new Array();
 
 let layerTrack = new ol.layer.Vector({
   map: map,
@@ -25,7 +24,7 @@ function init() {
   let view = new ol.View({
     center: [-665167.6272659146, 4493012.258874561],
     zoom: 8,
-    maxZoom: 20,
+    maxZoom: 19,
     minZoom: 8,
   });
 
@@ -109,7 +108,6 @@ function trackMe() {
 
 function locateMe(map) {
   let lastPosition = null;
-  //listLocation.push('locating');
   let located = false;
   let view = map.getView();
 
@@ -123,8 +121,6 @@ function locateMe(map) {
   }
 
   geolocation.setTracking(true);
-
-
 
   //eventos "on"
   // update the HTML page when the position changes.
@@ -160,37 +156,26 @@ function locateMe(map) {
     })
   );
 
-
-
   geolocation.on("change:position", function () {
     let coordinates = geolocation.getPosition();
     positionFeature.setGeometry(
       coordinates ? new ol.geom.Point(coordinates) : null
     );
 
-
-    /*if (listLocation.indexOf('locating') == 0) {
-      flyTo(coordinates, 18);//solo una vez
-    }*/
     if (!located) {
-      flyTo(coordinates, 18);//solo una vez
+      flyTo(coordinates, 17);//solo una vez
     }
 
     if (isCenter && located) {
       let zoom = view.getZoom();
-
-      if (zoom < 18) {
-        zoom = 18;
+      if (zoom < 17) {
+        zoom = 17;
       }
-
       view.setCenter(geolocation.getPosition());
       view.setZoom(zoom);
     }
 
-    /*listLocation.splice(listLocation.indexOf('locating'), 1);
-    listLocation.push('located');*/
-
-    located=true;
+    located = true;
 
     if (activateDeactivateTrack) {
       let sameLocation = true;
@@ -230,11 +215,9 @@ function locateMe(map) {
 function centerView(view) {
   if (geolocation.getPosition() != null) {
     let zoom = view.getZoom();
-
-    if (zoom < 18) {
-      zoom = 18;
+    if (zoom < 17) {
+      zoom = 17;
     }
-
     isCenter = true;
     flyTo(geolocation.getPosition(), zoom);
     el("center").setAttribute("disabled", "true");
@@ -242,41 +225,39 @@ function centerView(view) {
 }
 
 function checkCenter(view) {
-  if (geolocation != null) {
-    let center = view.getCenter();
-    let zoom = view.getZoom();
+  let center = view.getCenter();
+  let zoom = view.getZoom();
 
-    if (activateDeactivateLocation) {
-      let position = geolocation.getPosition();
+  if (activateDeactivateLocation) {
+    let position = geolocation.getPosition();
 
-      //track está activado
-      if (position != null) {
-        let samePoint = true;
+    //track está activado
+    if (position != null) {
+      let samePoint = true;
 
-        for (let index = 0; index < position.length; index++) {
-          if (center[index] != position[index]) {
-            samePoint = false;
-          }
-        }
-
-        if (samePoint && zoom >= 18) {
-          //está centrado
-          el("center").setAttribute("disabled", "true");
-          el("center").style.backgroundColor = '#71a7d3';
-          isCenter = true;
-        } else {
-          //no está centrado
-          el("center").removeAttribute("disabled");
-          el("center").style.backgroundColor = '#7A7A73';
-          isCenter = false;
+      for (let index = 0; index < position.length; index++) {
+        if (center[index] != position[index]) {
+          samePoint = false;
         }
       }
-    } else {
-      //track no está activado
-      el("center").setAttribute("disabled", "true");
-      el("center").style.backgroundColor = '#71a7d3';
-      isCenter = true;
+
+      if (samePoint && zoom >= 17) {
+        //está centrado
+        el("center").style.backgroundColor = '#71a7d3';
+        el("center").setAttribute("disabled", "true");
+        isCenter = true;
+      } else {
+        //no está centrado
+        el("center").style.backgroundColor = '#7A7A73';
+        el("center").removeAttribute("disabled");
+        isCenter = false;
+      }
     }
+  } else {
+    //track no está activado
+    el("center").style.backgroundColor = '#d5ddde';
+    el("center").setAttribute("disabled", "true");
+    isCenter = false;
   }
 }
 
@@ -284,7 +265,6 @@ function deactivate(map) {
   el("center").style.backgroundColor = '#d5ddde';
   el("center").setAttribute("disabled", "true");
   removePositions(map);
-  //listLocation = [];
   geolocation = null;
 }
 
