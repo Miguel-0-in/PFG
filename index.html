@@ -9,8 +9,13 @@
   <script src="./libs/v6.5.0-dist/ol.js"></script>
   <link rel="stylesheet" href="./libs/v6.5.0-dist/ol.css" />
 
-  <link rel="stylesheet" href="css/bootstrap.min.css" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-firestore.js"></script>
+
 
   <title>Proyecto Fin de Curso</title>
   <style>
@@ -23,19 +28,87 @@
 
 <body>
   <div id="map" class="map"></div>
-  <div id="info" style="display: none;"></div>
-  <label for="track">track position</label>
-  <button id="locate" class="icon-location2"></button>
-  <button id="track" class="icon-compass"></button>
-  <button id="center" class="icon-target" disabled="true"></button>
-  <p>
-    position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
-    altitude : <code id="altitude"></code>&nbsp;&nbsp;
-    altitude accuracy : <code id="altitudeAccuracy"></code>&nbsp;&nbsp;
-    heading : <code id="heading"></code>&nbsp;&nbsp;
-    speed : <code id="speed"></code>
-  </p>
-  <script src="Main.js"></script>
+  <div id="info">
+    <label for="track">track position</label>
+    <button id="locate" class="icon-location2"></button>
+    <button id="track" class="icon-compass"></button>
+    <button id="center" class="icon-target" disabled="true"></button>
+    <button id="logout" class="icon-exit"></button>
+    <p>
+      position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
+      altitude : <code id="altitude"></code>&nbsp;&nbsp;
+      altitude accuracy : <code id="altitudeAccuracy"></code>&nbsp;&nbsp;
+      heading : <code id="heading"></code>&nbsp;&nbsp;
+      speed : <code id="speed"></code>
+    </p>
+  </div>
+  <!-- The Login Modal -->
+  <div id="myModalLog" class="modal">
+
+    <!-- Modal content -->
+    <div id="myModContLog" class="modal-content">
+      <h1>Ingrese Usuario:</h1>
+      <form>
+        <div>
+          <label>
+            Nombre Usuario:
+          </label>
+          <input id="loginUsuario" type="usuario" name="usuario" placeholder="Nombre Usuraio"
+            value="srnexor@gmail.com" />
+        </div>
+        <div>
+          <label>
+            Password:
+          </label>
+          <input id="loginPass" type="password" name="clave" value="srnexor" />
+        </div>
+
+        <div>
+          <button id="btnLogIn" type="button" class="btn btn-success">Entrar</button>
+          <button id="btnSignUp" type="button" class="btn btn-warning">Registrar
+            Usuario</Button>
+        </div>
+      </form>
+      <div>
+        <p id="errorLogin" style="margin: 5px;"></p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!--The SignUp Modal-->
+  <div id="myModalSignUp" class="modal">
+
+    <!-- Modal content -->
+    <div id="myModContSignUp" class="modal-content">
+      <h1>Crea un Usuario:</h1>
+      <form>
+        <div>
+          <label>
+            Nombre del usuario:
+          </label>
+          <input id="signUpUsuario" type='text' value='' placeholder="Nombre">
+        </div>
+        <div>
+          <label>
+            Contraseña del usuario:
+          </label>
+          <input id="signUpPass" type='password' value='' placeholder="Contraseña">
+        </div>
+        <div>
+          <button id="btnCreateUser" type='button' class="btn btn-success">Crear
+            Usuario</button>
+          <button id="btnBack" type="button" class="btn btn-primary">Volver</button>
+        </div>
+      </form>
+      <div>
+        <p id="errorReg" style="margin: 5px;"></p>
+      </div>
+    </div>
+  </div>
+  <script src="JavaScript/conexion.js"></script>
+  <script src="JavaScript/Main.js"></script>
   <!--<script src="bootstrap-5.0.0-beta3-dist/js/jquery-3.5.1.slim.min.js"></script>
   <script src="bootstrap-5.0.0-beta3-dist/js/popper.min.js"></script>-->
   <script src="bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js"></script>
