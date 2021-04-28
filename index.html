@@ -19,21 +19,23 @@
 
   <title>Proyecto Fin de Curso</title>
   <style>
-    .map {
+    /* .map {
       width: 100%;
       height: 500px;
-    }
+    }*/
   </style>
 </head>
 
+
 <body>
-  <div id="map" class="map"></div>
-  <div id="info">
-    <label for="track">track position</label>
+  <div class="topnav">
     <button id="locate" class="icon-location2"></button>
     <button id="track" class="icon-compass"></button>
     <button id="center" class="icon-target" disabled="true"></button>
     <button id="logout" class="icon-exit"></button>
+  </div>
+  <div id="map" class="map"></div>
+  <!--<div id="info">
     <p>
       position accuracy : <code id="accuracy"></code>&nbsp;&nbsp;
       altitude : <code id="altitude"></code>&nbsp;&nbsp;
@@ -41,7 +43,7 @@
       heading : <code id="heading"></code>&nbsp;&nbsp;
       speed : <code id="speed"></code>
     </p>
-  </div>
+  </div>-->
   <!-- The Login Modal -->
   <div id="myModalLog" class="modal">
 

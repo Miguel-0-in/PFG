@@ -63,6 +63,8 @@
 
 #logout {
   background-color: rgb(48, 160, 252);
+  position: absolute; right: 0;
+  margin-right: 15px;
 }
 
 #myModalLog, #myModalSignUp{
@@ -83,4 +85,19 @@
 
 h1{
   font-size: 50px;
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+#map {
+  height: 92% !important;
 }
