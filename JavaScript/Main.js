@@ -164,6 +164,10 @@ function locateMe(map) {
 
     if (!located) {
       flyTo(coordinates, 17);//solo una vez
+
+      isCenter = true;
+      el("center").style.backgroundColor = '#71a7d3';
+      el("center").setAttribute("disabled", "true");
     }
 
     if (isCenter && located) {
