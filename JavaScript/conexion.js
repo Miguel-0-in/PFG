@@ -27,20 +27,24 @@ el("btnLogIn").addEventListener("click", function () {
   login(email, password);
 });
 
-el("btnLogInGoogle").addEventListener("click", function (){
+el("btnLogInGoogle").addEventListener("click", function () {
   let provider = new firebase.auth.GoogleAuthProvider();
 
-  return firebase.auth()
-    .signInWithPopup(provider)
-    .then((result) => {
-      /** @type {firebase.auth.OAuthCredential} */
-      var credential = result.credential;
+  firebase.auth().signInWithRedirect(provider);
 
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = credential.accessToken;
+  firebase.auth()
+    .getRedirectResult()
+    .then((result) => {
+      if (result.credential) {
+        /** @type {firebase.auth.OAuthCredential} */
+        var credential = result.credential;
+
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = credential.accessToken;
+        // ...
+      }
       // The signed-in user info.
       var user = result.user;
-      // ...
     }).catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
