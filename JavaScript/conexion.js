@@ -30,7 +30,7 @@ el("btnLogIn").addEventListener("click", function () {
 el("btnLogInGoogle").addEventListener("click", function (){
   let provider = new firebase.auth.GoogleAuthProvider();
 
-  firebase.auth()
+  return firebase.auth()
     .signInWithPopup(provider)
     .then((result) => {
       /** @type {firebase.auth.OAuthCredential} */
