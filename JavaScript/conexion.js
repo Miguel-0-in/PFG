@@ -34,18 +34,16 @@ el("btnLogInGoogle").addEventListener("click", function () {
   firebase.auth().signInWithRedirect(provider);
 
   firebase.auth()
-    .getRedirectResult()
+    .signInWithPopup(provider)
     .then((result) => {
-      if (result.credential) {
-        /** @type {firebase.auth.OAuthCredential} */
-        var credential = result.credential;
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
 
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = credential.accessToken;
-        // ...
-      }
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = credential.accessToken;
       // The signed-in user info.
       var user = result.user;
+      // ...
       if (modalLog.style.display == "block") {
         modalLog.style.display = "none";
         const historic = db.collection("historico").doc(user.email);
