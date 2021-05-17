@@ -41,6 +41,7 @@ el("btnLogInGoogle").addEventListener("click", function () {
       var token = credential.accessToken;
       // The signed-in user info.
       var user = result.user;
+      alert(user.email)
       // ...
       if (modalLog.style.display == "block") {
         modalLog.style.display = "none";
