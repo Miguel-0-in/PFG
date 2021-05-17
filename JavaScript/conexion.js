@@ -31,8 +31,6 @@ el("btnLogInGoogle").addEventListener("click", function () {
   const date = new Date(Date.now());
   const provider = new firebase.auth.GoogleAuthProvider();
 
-  firebase.auth().signInWithRedirect(provider);
-
   firebase.auth()
     .signInWithPopup(provider)
     .then((result) => {
