@@ -43,6 +43,7 @@ el("btnLogInGoogle").addEventListener("click", function () {
       var user = result.user;
       // ...
       if (!result.additionalUserInfo.isNewUser) {
+        modalLog.style.display = "none";
         const historic = db.collection("historico").doc(user.email);
         historic.update({
           fecha: firebase.firestore.FieldValue.arrayUnion(
@@ -50,6 +51,7 @@ el("btnLogInGoogle").addEventListener("click", function () {
           )
         });
       } else {
+        modalLog.style.display = "none";
         db.collection("historico")
           .doc(user.email)
           .set({
