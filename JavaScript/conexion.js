@@ -21,14 +21,15 @@ const modalLog = el("myModalLog");
 const modalSignUp = el("myModalSignUp");
 
 el("btnLogIn").addEventListener("click", function () {
-  let email = document.getElementById("loginUsuario").value;
-  let password = document.getElementById("loginPass").value;
+  const email = document.getElementById("loginUsuario").value;
+  const password = document.getElementById("loginPass").value;
 
   login(email, password);
 });
 
 el("btnLogInGoogle").addEventListener("click", function () {
-  let provider = new firebase.auth.GoogleAuthProvider();
+  const date = new Date(Date.now());
+  const provider = new firebase.auth.GoogleAuthProvider();
 
   firebase.auth().signInWithRedirect(provider);
 
@@ -45,15 +46,28 @@ el("btnLogInGoogle").addEventListener("click", function () {
       }
       // The signed-in user info.
       var user = result.user;
+      if (modalLog.style.display == "block") {
+        modalLog.style.display = "none";
+        const historic = db.collection("historico").doc(user.email);
+        historic.update({
+          fecha: firebase.firestore.FieldValue.arrayUnion(
+            firebase.firestore.Timestamp.fromDate(date)
+          )
+        });
+      } else {
+        modalSignUp.style.display = "none";
+        const hist = db
+          .collection("historico")
+          .doc(user.email)
+          .set({
+            fecha: firebase.firestore.FieldValue.arrayUnion(
+              firebase.firestore.Timestamp.fromDate(date)
+            )
+          });
+      }
     }).catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
       var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
+      document.getElementById("errorLogin").textContent = errorMessage;
     });
 });
 
@@ -74,7 +88,7 @@ el("btnCreateUser").addEventListener("click", function () {
       login(email, password);
     })
     .catch((error) => {
-      var errorMessage = error.message;
+      const errorMessage = error.message;
       document.getElementById("errorReg").textContent = errorMessage;
     });
 });
