@@ -1,19 +1,18 @@
 @font-face {
-  font-family: "icomoon";
-  src: url("fonts/icomoon.eot?5cxna");
-  src: url("fonts/icomoon.eot?5cxna#iefix") format("embedded-opentype"),
-    url("fonts/icomoon.ttf?5cxna") format("truetype"),
-    url("fonts/icomoon.woff?5cxna") format("woff"),
-    url("fonts/icomoon.svg?5cxna#icomoon") format("svg");
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?vpvhsq');
+  src:  url('fonts/icomoon.eot?vpvhsq#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?vpvhsq') format('truetype'),
+    url('fonts/icomoon.woff?vpvhsq') format('woff'),
+    url('fonts/icomoon.svg?vpvhsq#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
 }
 
-[class^="icon-"],
-[class*=" icon-"] {
+[class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: "icomoon" !important;
+  font-family: 'icomoon' !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -43,7 +42,7 @@
   margin: 15px;
 }
 
-#locate,#track,#center,#logout {
+#locate,#track,#center, #save,#logout {
   margin: 5px;
   border-radius: 50px;
   border: none; /* Remove borders */
@@ -57,7 +56,7 @@
   background-color: #7a7a73;
 }
 
-#center {
+#center, #save {
   background-color: #d5ddde;
 }
 

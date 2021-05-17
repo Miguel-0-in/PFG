@@ -79,6 +79,9 @@ function actDeacTrack() {
     activateDeactivateTrack = true;
     el("track").style.backgroundColor = "#71a7d3";
 
+    el('save').style.color = "#7A7A73";
+    el('save').removeAttribute("disabled");
+
     trackMe();
 
     if (!activateDeactivateLocation) {
