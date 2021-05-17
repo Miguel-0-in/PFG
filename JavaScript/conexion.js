@@ -41,10 +41,8 @@ el("btnLogInGoogle").addEventListener("click", function () {
       var token = credential.accessToken;
       // The signed-in user info.
       var user = result.user;
-      alert(user.email)
       // ...
-      if (modalLog.style.display == "block") {
-        modalLog.style.display = "none";
+      if (!result.additionalUserInfo.isNewUser) {
         const historic = db.collection("historico").doc(user.email);
         historic.update({
           fecha: firebase.firestore.FieldValue.arrayUnion(
@@ -52,9 +50,7 @@ el("btnLogInGoogle").addEventListener("click", function () {
           )
         });
       } else {
-        modalSignUp.style.display = "none";
-        const hist = db
-          .collection("historico")
+        db.collection("historico")
           .doc(user.email)
           .set({
             fecha: firebase.firestore.FieldValue.arrayUnion(
@@ -127,8 +123,7 @@ function login(email, password) {
             });
           } else {
             modalSignUp.style.display = "none";
-            let hist = db
-              .collection("historico")
+            db.collection("historico")
               .doc(email)
               .set({
                 fecha: firebase.firestore.FieldValue.arrayUnion(
