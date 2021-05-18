@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('fonts/icomoon.eot?vpvhsq');
-  src:  url('fonts/icomoon.eot?vpvhsq#iefix') format('embedded-opentype'),
-    url('fonts/icomoon.ttf?vpvhsq') format('truetype'),
-    url('fonts/icomoon.woff?vpvhsq') format('woff'),
-    url('fonts/icomoon.svg?vpvhsq#icomoon') format('svg');
+  src:  url('fonts/icomoon.eot?fro8of');
+  src:  url('fonts/icomoon.eot?fro8of#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?fro8of') format('truetype'),
+    url('fonts/icomoon.woff?fro8of') format('woff'),
+    url('fonts/icomoon.svg?fro8of#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -31,6 +31,9 @@
 .icon-compass:before {
   content: "\e949";
 }
+.icon-floppy-disk:before {
+  content: "\e962";
+}
 .icon-target:before {
   content: "\e9b3";
 }
@@ -42,7 +45,7 @@
   margin: 15px;
 }
 
-#locate,#track,#center, #save,#logout {
+#locate,#track,#center, #save, #logout {
   margin: 5px;
   border-radius: 50px;
   border: none; /* Remove borders */
