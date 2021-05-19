@@ -28,7 +28,6 @@ el("btnLogIn").addEventListener("click", function () {
 });
 
 el("btnLogInGoogle").addEventListener("click", function () {
-  const date = new Date(Date.now());
   const provider = new firebase.auth.GoogleAuthProvider();
 
   firebase.auth()
@@ -37,21 +36,10 @@ el("btnLogInGoogle").addEventListener("click", function () {
       var user = result.user;
       if (!result.additionalUserInfo.isNewUser) {
         modalLog.style.display = "none";
-        const historic = db.collection("historico").doc(user.email);
-        historic.update({
-          fecha: firebase.firestore.FieldValue.arrayUnion(
-            firebase.firestore.Timestamp.fromDate(date)
-          )
-        });
+        loginHistorico(user.email);
       } else {
         modalLog.style.display = "none";
-        db.collection("historico")
-          .doc(user.email)
-          .set({
-            fecha: firebase.firestore.FieldValue.arrayUnion(
-              firebase.firestore.Timestamp.fromDate(date)
-            )
-          });
+        signUpHistorico(user.email);
       }
     }).catch((error) => {
       var errorMessage = error.message;
@@ -99,7 +87,6 @@ el("logout").addEventListener("click", function () {
 });
 
 function login(email, password) {
-  const date = new Date(Date.now());
   firebase
     .auth()
     .setPersistence(firebase.auth.Auth.Persistence.SESSION)
@@ -110,21 +97,10 @@ function login(email, password) {
         .then((userCredential) => {
           if (modalLog.style.display == "block") {
             modalLog.style.display = "none";
-            let historic = db.collection("historico").doc(email);
-            historic.update({
-              fecha: firebase.firestore.FieldValue.arrayUnion(
-                firebase.firestore.Timestamp.fromDate(date)
-              )
-            });
+            loginHistorico(email);
           } else {
             modalSignUp.style.display = "none";
-            db.collection("historico")
-              .doc(email)
-              .set({
-                fecha: firebase.firestore.FieldValue.arrayUnion(
-                  firebase.firestore.Timestamp.fromDate(date)
-                )
-              });
+            signUpHistorico(email);
           }
         })
         .catch((error) => {
@@ -140,4 +116,25 @@ function login(email, password) {
 
 function el(id) {
   return document.getElementById(id);
+}
+
+function loginHistorico(email) {
+  const date = new Date(Date.now());
+  let historic = db.collection("historico").doc(email);
+  historic.update({
+    fecha: firebase.firestore.FieldValue.arrayUnion(
+      firebase.firestore.Timestamp.fromDate(date)
+    )
+  });
+}
+
+function signUpHistorico(email) {
+  const date = new Date(Date.now());
+  db.collection("historico")
+    .doc(email)
+    .set({
+      fecha: firebase.firestore.FieldValue.arrayUnion(
+        firebase.firestore.Timestamp.fromDate(date)
+      )
+    });
 }
