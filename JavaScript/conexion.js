@@ -119,6 +119,7 @@ function el(id) {
 }
 
 function loginHistorico(email) {
+  email = email.toLowerCase();
   const date = new Date(Date.now());
   let historic = db.collection("historico").doc(email);
   historic.update({
@@ -129,6 +130,7 @@ function loginHistorico(email) {
 }
 
 function signUpHistorico(email) {
+  email = email.toLowerCase();
   const date = new Date(Date.now());
   db.collection("historico")
     .doc(email)

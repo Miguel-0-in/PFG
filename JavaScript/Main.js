@@ -143,24 +143,6 @@ function locateMe(map) {
 
   geolocation.setTracking(true);
 
-  //eventos "on"
-  // update the HTML page when the position changes.
-  /*geolocation.on("change", function () {
-    el("accuracy").innerText = geolocation.getAccuracy() + " [m]";
-    el("altitude").innerText = geolocation.getAltitude() + " [m]";
-    el("altitudeAccuracy").innerText =
-      geolocation.getAltitudeAccuracy() + " [m]";
-    el("heading").innerText = geolocation.getHeading() + " [rad]";
-    el("speed").innerText = geolocation.getSpeed() + " [m/s]";
-  });*/
-
-  // handle geolocation error.
-  /* geolocation.on("error", function (error) {
-    var info = document.getElementById("info");
-    info.innerHTML = error.message;
-    info.style.display = "";
-  });*/
-
   positionFeature = new ol.Feature();
   positionFeature.setStyle(
     new ol.style.Style({
